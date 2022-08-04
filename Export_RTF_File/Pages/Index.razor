@@ -1,0 +1,65 @@
+﻿@page "/"
+
+@using System;
+@using System.IO;
+@using Export_RTF_File.Data;
+@using System.Threading.Tasks;
+@using Syncfusion.Pdf;
+@using Syncfusion.HtmlConverter;
+@using Syncfusion.Blazor.RichTextEditor;
+@using Syncfusion.Blazor.Popups;
+@inject ExportService exportService
+
+<button class="e-btn" @onclick="@OnBtnClick">Open Dialog</button>
+
+<SfDialog @bind-Visible="@IsVisible" Width="550px" ShowCloseIcon="true" IsModal="true">
+    <DialogTemplates>
+        <Header> Dialog</Header>
+        <Content>
+            <SfRichTextEditor ID="defalt_RTE" @ref="RteObj" @bind-Value="@rteValue">
+                <ChildContent>
+                    <RichTextEditorToolbarSettings  Type="ToolbarType.Expand"></RichTextEditorToolbarSettings>
+                    <RichTextEditorImageSettings SaveUrl="api/SampleData/Save" Path="../images/"></RichTextEditorImageSettings>
+                </ChildContent>
+            </SfRichTextEditor>
+            <div>
+                <button class="btn btn-primary" @onclick="@Export">Export as PDF</button>
+            </div>
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick" Content="Ok" IsPrimary="true"></DialogButton>
+        <DialogButton OnClick="@OkClick" Content="Cancel"></DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+
+@code {
+    [Inject]
+    IJSRuntime jsRuntime { get; set; }
+
+    SfRichTextEditor RteObj;
+    private string rteValue { get; set; } = @"<p>Starting Text</p>";
+
+
+    private bool IsVisible { get; set; } = false;
+
+    private void OkClick()
+    {
+        this.IsVisible = false;
+    }
+    private void OnBtnClick()
+    {
+        this.IsVisible = true;
+    }
+
+    private async Task Export()  
+    {  
+        using (MemoryStream excelStream = exportService.ExportAsPdf(this.rteValue))  
+        {  
+            await SampleInterop.SaveAs<object>(jsRuntime, "Sample.pdf", excelStream.ToArray());  
+        }  
+    }  
+
+
+   }
