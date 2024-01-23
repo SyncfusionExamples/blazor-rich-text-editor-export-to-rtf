@@ -2,7 +2,7 @@
 
 The Rich Text Editor content export to RTF file While cliking on the export button, in the button click action call export service and convert to the RTF file using [Syncfusion.DocIO](https://www.syncfusion.com/document-processing/word-framework/net) libraries.
 
-## Project pre-requisites
+## Prerequisites
 
 * Visual Studio 2022
 
