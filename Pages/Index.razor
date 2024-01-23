@@ -1,0 +1,35 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.RichTextEditor;
+@using Syncfusion.Blazor.Inputs;
+@inject NavigationManager navigationManager;
+@inject HttpClient Http
+@using System.Net.Http;
+@using System.Threading.Tasks;
+
+<Syncfusion.Blazor.Buttons.SfButton OnClick="OnExport">Export</Syncfusion.Blazor.Buttons.SfButton>
+<SfRichTextEditor ID="customtool" @ref="RteObj" @bind-Value="@rteValue" EnableHtmlSanitizer="false">
+    <RichTextEditorImageSettings SaveUrl="api/SampleData/Save" Path="../images/"></RichTextEditorImageSettings>
+</SfRichTextEditor>
+
+@code {
+    SfRichTextEditor RteObj;
+
+    [Inject]
+    IJSRuntime jsRuntime { get; set; }
+
+
+    private string rteValue { get; set; } = "<p>Click the export button to download the RTE content in RTF format</p>";
+
+    public async Task OnExport()
+    {
+
+        HttpClientHandler clientHandler = new HttpClientHandler();
+        clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+        HttpClient client = new HttpClient(clientHandler);
+        var content = new StringContent(rteValue);
+        content.Headers.Add("value", rteValue);
+        await client.PostAsync(navigationManager.Uri + "api/SampleData/ExportToRtf", content);
+        await SampleInterop.SaveAs<object>(jsRuntime, "Sample.rtf");
+    }
+}
