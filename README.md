@@ -44,10 +44,14 @@ Enter content in the Rich Text Editor and click the export button to convert and
 
 ## Troubleshooting
 
-- Restore NuGet packages and ensure the project builds.
-- Verify Syncfusion license configuration and check logs for errors.
+- Ensure NuGet packages are restored and the project builds before running.
+- If export fails, check browser console and server logs for errors and confirm any required licenses are configured.
+
+## Support
+
+This sample is provided for demonstration purposes. For issues, open an issue in the repository.
 
 ## See also
 
-- [Online examples](https://blazor.syncfusion.com/demos/rich-text-editor/overview?theme=fluent)
-- [Documentation](https://blazor.syncfusion.com/documentation/rich-text-editor/getting-started)
+- [Online examples](https://blazor.syncfusion.com/demos/rich-text-editor/overview?theme=fluent2)
+- [Documentation](https://blazor.syncfusion.com/documentation/rich-text-editor/getting-started-webapp)
